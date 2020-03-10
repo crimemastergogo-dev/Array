@@ -47,6 +47,7 @@ void Append(ARRAY *p_array,int element)
     Display(p_array);
     return;
 }
+
 /*Insert at any position*/
 void InsertPos(ARRAY *p_array,int element,int index)
 {
@@ -94,6 +95,7 @@ void Delete(ARRAY *p_array,int index)
 }
 
 /*Linear search in an array*/
+/*Transpostion and  move to front can be used to improve Linear Searching*/
 void LinearSearch(ARRAY *p_array,int key)
 {
     int flag = 0;
@@ -111,6 +113,40 @@ void LinearSearch(ARRAY *p_array,int key)
 
     return;
 }
+
+/*Binary Search in array*/
+/*Pre-requiste for binary search is that the Array should be sorted*/
+void BinarySearch(ARRAY *p_array,int key)
+{
+    int mid  = 0;
+    int low  = 0;
+    int high = p_array->length-1;
+    int flag = 0;
+
+    while(low<=high)
+    {
+        mid = (low + high)/2;
+
+        if(key == *(p_array->A+mid))
+        {
+            flag = 1;
+            printf("Element %d found at index %d\n",key,mid);
+            break;
+        }
+        else if(key < *(p_array->A+mid))
+        {
+            high = mid-1;
+        }
+        else 
+            low = mid + 1;
+    }
+
+    if(flag == 0)
+        printf("No such Element in the Array\n");
+
+    return;
+}
+
 int main()
 {
     ARRAY           *p_array = NULL ;
@@ -154,6 +190,11 @@ int main()
     printf("Enter value to be searched:\n");
     scanf("%d",&value);
     LinearSearch(p_array,value);
+
+    printf("Binary Searching in Array\n");
+    printf("Enter value to be searched:\n");
+    scanf("%d",&value);
+    BinarySearch(p_array,value);
 
     return 0;
 }
