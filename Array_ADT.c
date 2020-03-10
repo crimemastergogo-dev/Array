@@ -9,14 +9,18 @@ typedef struct
     int length;
 }ARRAY;
 
+/*Display the array*/
 void Display(ARRAY *p_array)
 {
     int i;
 
     for( i =0 ;i<p_array->length;i++)
         printf("%d ",*(p_array->A+i));
+    
+    printf("\n");
 }
 
+/*Insert the elements in the array*/
 void Insert(ARRAY *p_array)
 {
     int i;
@@ -25,10 +29,50 @@ void Insert(ARRAY *p_array)
         scanf("%d",p_array->A+i);
 }
 
+/*Insert at end of the Array*/
+void Append(ARRAY *p_array,int element)
+{
+    if(p_array->length < p_array->size)
+    {
+        *(p_array->A + p_array->length++) = element;
+    }
+    else
+    {
+        printf("MAX SIZED IS REACHED\n");
+        return;
+    }
+    printf("Array Elements after append:\n");
+    Display(p_array);
+}
+/*Insert at any position*/
+void InsertPos(ARRAY *p_array,int element,int index)
+{
+    int i = 0;
+    if(index >= 0 && index < p_array->length)
+    {
+        for(i = p_array->length ; i>index; i--)
+            *(p_array->A + i) = *(p_array->A + i-1);
+
+        *(p_array->A + index) = element;
+        p_array->length++;
+    }
+    else
+    {
+        printf("INVALID INDEX\n");
+        return;
+    }
+    printf("\nArray Elements after inserting %d at index %d\n",element,index);
+    Display(p_array);
+}
+
 int main()
 {
     ARRAY           *p_array = NULL ;
+    int             element  = 0; 
+    int             index    = 0;
+    int             value    = 0;
 
+    
     p_array = (ARRAY *)malloc(sizeof(ARRAY));
     memset(p_array,0,sizeof(ARRAY));
 
@@ -38,11 +82,23 @@ int main()
     scanf("%d",&p_array->length);
     p_array->A = (int *)malloc(p_array->size*sizeof(int));
 
-    printf("INSERT Array Elements :\n");
+    printf("INSERT Array Elements:\n");
     Insert(p_array);
 
-    printf("DISPLAY Array Elements :\n");
+    printf("DISPLAY Array Elements:\n");
     Display(p_array);
+
+    printf("Enter element to append:\n");
+    scanf("%d",&element);
+    Append(p_array,element);
+
+
+    printf("Enter the index:\n");
+    scanf("%d",&index);
+    printf("Enter value to be inserted:\n");
+    scanf("%d",&value);
+    InsertPos(p_array,value,index);
+
 
     return 0;
 }
