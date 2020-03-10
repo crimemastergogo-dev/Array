@@ -314,15 +314,143 @@ void RightRotate(ARRAY *ptr)
     return;
 }
 
+/* Insert in Sorted Array */
+void InsertSorted(ARRAY *ptr,int element)
+{
+    int i = ptr->length -1;
+
+    while(*(ptr->A+i)>element)
+    {
+        *(ptr->A+i+1) = *(ptr->A+i);
+            i--;
+    }
+    *(ptr->A+i+1) = element;
+    return;
+}
+
+/*Checking Sorted or not*/
+void CheckSorted(ARRAY *ptr)
+{
+    int i    = 0;
+    int flag = 0;
+    for (i = 0;i<ptr->length-1;i++)
+    {
+        if(*(ptr->A+i)>*(ptr->A+i+1))
+        {
+            flag = 1;
+            break;
+        }
+    }
+    if(flag == 0)
+    {
+        printf("List is Sorted\n");
+    }
+    else
+    {
+        printf("List is Not Sorted\n"); 
+    }
+    return;
+}
+
+/*splitting -ve and +ve elements*/
+void splitElement(ARRAY *ptr)
+{
+    int i    = 0;
+    int j    = ptr->length-1;
+    int temp = 0;
+
+    while(i<j)
+    {
+        while(*(ptr->A+i)<0)i++;
+        while(*(ptr->A+i)>=0)j--;
+        if(i<j)
+        {
+            temp = *(ptr->A+i);
+            *(ptr->A+i) = *(ptr->A+j);
+            *(ptr->A+j) = temp;
+        }
+    }
+
+    printf("Array elements after splitting -ve and +ve elements :\n ");
+    Display(ptr);
+
+    return;
+
+}
+
+/*Merge Two Array*/
+/*It can be done in sorted list only*/
+void Merege(ARRAY *ptr1,ARRAY *ptr2)
+{
+    ARRAY *p_arrayC = NULL;
+    int       sizeC = 0;
+    int        lenC = 0;
+    int           i = 0;
+    int           j = 0;
+    int           k = 0;
+
+    p_arrayC = (ARRAY *)malloc(sizeof(ARRAY));
+    memset(p_arrayC,0,sizeof(ARRAY));
+
+    
+    sizeC = ptr2->size + ptr1->size;
+    lenC  = ptr2->length + ptr1->length;
+    p_arrayC->size   = sizeC;
+    p_arrayC->length = lenC;
+    if(lenC < sizeC && sizeC > 0)
+        p_arrayC->A = (int *)malloc(sizeC*sizeof(int));
+    else
+    {
+        printf("ERROR:Memory Allocation Failed for ARRAY C\n");
+        exit (1);
+    }
+    
+    while(i < ptr1->length && j <ptr2->length)
+    {
+        if(*(ptr1->A+i)<*(ptr2->A+j))
+        {
+            *(p_arrayC->A+k) = *(ptr1->A+i);
+            k++;
+            i++;     
+        }
+        else
+        {
+            *(p_arrayC->A+k) = *(ptr2->A+j);
+            k++;
+            j++;     
+        }
+    }
+    for(;i < ptr1->length;i++)
+    {
+        *(p_arrayC->A+k) = *(ptr1->A+i);
+        k++;
+    }
+    for(;j < ptr2->length;j++)
+    {
+        *(p_arrayC->A+k) = *(ptr2->A+j);
+        k++;
+    }
+
+    printf("Merged Array :\n ");
+    Display(p_arrayC);
+    free(p_arrayC->A);
+    free(p_arrayC);
+    return;
+}
+
 int main()
 {
-    ARRAY           *p_array = NULL ;
-    int             element  = 0; 
-    int             index    = 0;
-    int             value    = 0;
+    ARRAY           *p_array  = NULL ;
+    ARRAY           *p_arrayB = NULL;
+    int             element   = 0; 
+    int             index     = 0;
+    int             value     = 0;
 
     p_array = (ARRAY *)malloc(sizeof(ARRAY));
     memset(p_array,0,sizeof(ARRAY));
+
+    p_arrayB = (ARRAY *)malloc(sizeof(ARRAY));
+    memset(p_arrayB,0,sizeof(ARRAY));
 
     printf("Enter max size of Array:");
     scanf("%d",&p_array->size);
@@ -393,8 +521,36 @@ int main()
     LeftRotate(p_array);
     RightShift(p_array);
     RightRotate(p_array);
-   
+
+    CheckSorted(p_array);
+    printf("Enter element in sorted Array\n");
+    printf("Enter value to be Entered:\n");
+    scanf("%d",&value);
+    InsertSorted(p_array,value);
+    splitElement(p_array);
+
+    printf("Enter max size of Array B:");
+    scanf("%d",&p_arrayB->size);
+    printf("Enter length  of Array B:");
+    scanf("%d",&p_arrayB->length);
+    if(p_arrayB->length < p_arrayB->size && p_arrayB->size > 0)
+        p_arrayB->A = (int *)malloc(p_arrayB->size*sizeof(int));
+    else
+    {
+        printf("ERROR:Memory Allocation Failed for ARRAY B\n");
+        exit (1);
+    }
+    printf("INSERT Array B Elements:\n");
+    Insert(p_arrayB);
+
+    printf("DISPLAY Array B Elements:\n");
+    Display(p_arrayB);
+
+    Merege(p_array,p_arrayB);
+
     free(p_array->A);
+    free(p_arrayB->A);
     free(p_array);
+    free(p_arrayB);
     return 0;
 }
