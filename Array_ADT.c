@@ -445,6 +445,8 @@ int main()
     int             element   = 0; 
     int             index     = 0;
     int             value     = 0;
+    int             choice    = 0;
+    char            ch;
 
     p_array = (ARRAY *)malloc(sizeof(ARRAY));
     memset(p_array,0,sizeof(ARRAY));
@@ -463,90 +465,186 @@ int main()
         printf("ERROR:Memory Allocation Failed\n");
         exit (1);
     }
-    printf("INSERT Array Elements:\n");
-    Insert(p_array);
 
-    printf("DISPLAY Array Elements:\n");
-    Display(p_array);
-
-    printf("Enter element to append:\n");
-    scanf("%d",&element);
-    Append(p_array,element);
-
-    printf("Enter the Element at any position:\n");
-    printf("Enter the index:\n");
-    scanf("%d",&index);
-    printf("Enter value to be inserted:\n");
-    scanf("%d",&value);
-    InsertPos(p_array,value,index);
-
-    printf("Delete the Element from any position:\n");
-    printf("Enter the index:\n");
-    scanf("%d",&index);
-    Delete(p_array,index);
-
-    printf("Linear Searching in Array\n");
-    printf("Enter value to be searched:\n");
-    scanf("%d",&value);
-    LinearSearch(p_array,value);
-
-    printf("Binary Searching in Array\n");
-    printf("Enter value to be searched:\n");
-    scanf("%d",&value);
-    BinarySearch(p_array,value);
-
-    printf("Element from given index :\n");
-    printf("Enter the index:\n");
-    scanf("%d",&index);
-    if(GetElement(p_array,index) == -1)
-        printf("INVALID INDEX\n");
-    else
-        printf("Element at index %d is %d\n",index,GetElement(p_array,index));
-
-    printf("Replacing Element at any position:\n");
-    printf("Enter the index:\n");
-    scanf("%d",&index);
-    printf("Enter value to be inserted:\n");
-    scanf("%d",&value);
-    SetElement(p_array,index,value);
-
-    printf("MAX and MIN Element in ARRAY->\n");
-    MaxMin(p_array); 
-
-    printf("Sum of all the Elements :%d\n",sumArray(p_array));
-    printf("Average of the Elements :%f\n",AvgArray(p_array));
-
-    Reverse(p_array);
-    LeftShift(p_array);
-    LeftRotate(p_array);
-    RightShift(p_array);
-    RightRotate(p_array);
-
-    CheckSorted(p_array);
-    printf("Enter element in sorted Array\n");
-    printf("Enter value to be Entered:\n");
-    scanf("%d",&value);
-    InsertSorted(p_array,value);
-    splitElement(p_array);
-
-    printf("Enter max size of Array B:");
-    scanf("%d",&p_arrayB->size);
-    printf("Enter length  of Array B:");
-    scanf("%d",&p_arrayB->length);
-    if(p_arrayB->length < p_arrayB->size && p_arrayB->size > 0)
-        p_arrayB->A = (int *)malloc(p_arrayB->size*sizeof(int));
-    else
+    do
     {
-        printf("ERROR:Memory Allocation Failed for ARRAY B\n");
-        exit (1);
-    }
-    printf("INSERT Array B Elements:\n");
-    Insert(p_arrayB);
+        printf("*************************************\n");
+        printf("*************ARRAY ADT***************\n");
+        printf("*************************************\n");
+        printf("\n1.INSERT\n2.DISPLAY\n3.APPEND\n4.INSERT AT POS");
+        printf("\n5.DELETE ELEMENT\n6.LINEAR SEARCH");
+        printf("\n7.BINARY SEARCH\n8.ELEMENT AT INDEX");
+        printf("\n9.REPLACING ELEMENT\n10.MAX MIN\n11.SUM OF ALL ELEMENT");
+        printf("\n12.AVG of ELE\n13.REVERSE\n14.LEFT SHIFT");
+        printf("\n15.LEFT ROTATE\n16.RIGHT SHIFT\n17.RIGHT ROTATE");
+        printf("\n18.CHECK IF SORTED\n19.INSERT IN SORTED");
+        printf("\n20.SPLIT -ve and +ve\n21.MERGE TWO ARRAY\n");
+        printf("Enter choice:");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+            {
+                printf("INSERT Array Elements:\n");
+                Insert(p_array);
+                break;
+            }
+            case 2:
+            {
+                printf("DISPLAY Array Elements:\n");
+                Display(p_array);
+                break;
+            }
+            case 3:
+            {
+                printf("Enter element to append:\n");
+                scanf("%d",&element);
+                Append(p_array,element);
+                break;
+            }
+            case 4:
+            {
+                printf("Enter the Element at any position:\n");
+                printf("Enter the index:\n");
+                scanf("%d",&index);
+                printf("Enter value to be inserted:\n");
+                scanf("%d",&value);
+                InsertPos(p_array,value,index);
+                break;
+            }
+            case 5:
+            {
+                printf("Delete the Element from any position:\n");
+                printf("Enter the index:\n");
+                scanf("%d",&index);
+                Delete(p_array,index);
+                break;
+            }
+            case 6:
+            {
+                printf("Linear Searching in Array\n");
+                printf("Enter value to be searched:\n");
+                scanf("%d",&value);
+                LinearSearch(p_array,value);
+                break;
+            }
+            case 7:
+            { 
+                printf("Binary Searching in Array\n");
+                printf("Enter value to be searched:\n");
+                scanf("%d",&value);
+                BinarySearch(p_array,value);
+                break;
+            }
+            case 8:
+            {  
+                printf("Element from given index :\n");
+                printf("Enter the index:\n");
+                scanf("%d",&index);
+                if(GetElement(p_array,index) == -1)
+                    printf("INVALID INDEX\n");
+                else
+                    printf("Element at index %d is %d\n",index,GetElement(p_array,index));
+                break;
+            }
+            case 9:
+            {   
+                printf("Replacing Element at any position:\n");
+                printf("Enter the index:\n");
+                scanf("%d",&index);
+                printf("Enter value to be inserted:\n");
+                scanf("%d",&value);
+                SetElement(p_array,index,value);
+                break;
+            }
+            case 10:
+            {
+                printf("MAX and MIN Element in ARRAY->\n");
+                MaxMin(p_array); 
+                break;
+            }
+            case 11:
+            {
+                printf("Sum of all the Elements :%d\n",sumArray(p_array));
+                break;
+            }
+            case 12:
+            {
+                printf("Average of the Elements :%f\n",AvgArray(p_array));
+                break;
+            }
+            case 13:
+            {
+                Reverse(p_array);
+                break;
+            }
+            case 14:
+            {
+                LeftShift(p_array);
+                break;
+            }
+            case 15:
+            {
+                LeftRotate(p_array);
+                break;
+            }
+            case 16:
+            {
+                RightShift(p_array);
+                break;
+            }
+            case 17:
+            {
+                RightRotate(p_array);
+                break;
+            }
+            case 18:
+            {
+                CheckSorted(p_array);
+                break;
+            }
+            case 19:
+            {
+                printf("Enter element in sorted Array\n");
+                printf("Enter value to be Entered:\n");
+                scanf("%d",&value);
+                InsertSorted(p_array,value);
+                break;
+            }
+            case 20:
+            {
+                splitElement(p_array);
+                break;
+            }
+            case 21:
+            {
+                printf("Enter max size of Array B:");
+                scanf("%d",&p_arrayB->size);
+                printf("Enter length  of Array B:");
+                scanf("%d",&p_arrayB->length);
+                if(p_arrayB->length < p_arrayB->size && p_arrayB->size > 0)
+                    p_arrayB->A = (int *)malloc(p_arrayB->size*sizeof(int));
+                else
+                {
+                    printf("ERROR:Memory Allocation Failed for ARRAY B\n");
+                    exit (1);
+                }
+                printf("INSERT Array B Elements:\n");
+                Insert(p_arrayB);
 
-    printf("DISPLAY Array B Elements:\n");
-    Display(p_arrayB);
+                printf("DISPLAY Array B Elements:\n");
+                Display(p_arrayB);
 
-    Merege(p_array,p_arrayB);
+                Merege(p_array,p_arrayB);
+                break;
+            }
+
+            default:
+            printf("WRONG OPTION\n");
+        }
+        printf("Do you want to continue (y/n):");
+        scanf("%c",&ch);
+    }while(ch == 'n');
 
     free(p_array->A);
     free(p_arrayB->A);
