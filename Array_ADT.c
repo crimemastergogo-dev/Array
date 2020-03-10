@@ -18,6 +18,7 @@ void Display(ARRAY *p_array)
         printf("%d ",*(p_array->A+i));
     
     printf("\n");
+    return;
 }
 
 /*Insert the elements in the array*/
@@ -27,6 +28,7 @@ void Insert(ARRAY *p_array)
 
     for(int i =0 ;i<p_array->length;i++)
         scanf("%d",p_array->A+i);
+    return;
 }
 
 /*Insert at end of the Array*/
@@ -43,6 +45,7 @@ void Append(ARRAY *p_array,int element)
     }
     printf("Array Elements after append:\n");
     Display(p_array);
+    return;
 }
 /*Insert at any position*/
 void InsertPos(ARRAY *p_array,int element,int index)
@@ -63,6 +66,7 @@ void InsertPos(ARRAY *p_array,int element,int index)
     }
     printf("\nArray Elements after inserting %d at index %d\n",element,index);
     Display(p_array);
+    return;
 }
 
 /*Deleting the elemnt in an array*/
@@ -86,6 +90,26 @@ void Delete(ARRAY *p_array,int index)
 
     printf("\nArray Elements after Deleting element at index %d\n",index);
     Display(p_array);
+    return;
+}
+
+/*Linear search in an array*/
+void LinearSearch(ARRAY *p_array,int key)
+{
+    int flag = 0;
+    int i    = 0;
+    for(i = 0 ; i<p_array->length;i++)
+    {
+        if(*(p_array->A +i) == key)
+        {
+            printf("Element %d found at Index %d \n",key,i);
+            flag = 1;    
+        }
+    }
+    if(flag == 0)
+        printf("No such Element in the Array\n");
+
+    return;
 }
 int main()
 {
@@ -125,6 +149,11 @@ int main()
     printf("Enter the index:\n");
     scanf("%d",&index);
     Delete(p_array,index);
+
+    printf("Linear Searching in Array\n");
+    printf("Enter value to be searched:\n");
+    scanf("%d",&value);
+    LinearSearch(p_array,value);
 
     return 0;
 }
