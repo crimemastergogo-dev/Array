@@ -65,6 +65,28 @@ void InsertPos(ARRAY *p_array,int element,int index)
     Display(p_array);
 }
 
+/*Deleting the elemnt in an array*/
+void Delete(ARRAY *p_array,int index)
+{
+    int i    = 0;
+    int temp = 0;
+    if(index >=0 && index < p_array->length )
+    {
+        temp = *(p_array->A + index);
+        for(i = index ; i< p_array->length-1; i++)
+            *(p_array->A + i) = *(p_array->A + i+1);
+    
+        p_array->length--;
+    }
+    else
+    {
+        printf("INVALID INDEX\n");
+        return;
+    }
+
+    printf("\nArray Elements after Deleting element at index %d\n",index);
+    Display(p_array);
+}
 int main()
 {
     ARRAY           *p_array = NULL ;
@@ -92,13 +114,17 @@ int main()
     scanf("%d",&element);
     Append(p_array,element);
 
-
+    printf("Enter the Elemnt at any position:\n");
     printf("Enter the index:\n");
     scanf("%d",&index);
     printf("Enter value to be inserted:\n");
     scanf("%d",&value);
     InsertPos(p_array,value,index);
 
+    printf("Delete the Elemnt from any position:\n");
+    printf("Enter the index:\n");
+    scanf("%d",&index);
+    Delete(p_array,index);
 
     return 0;
 }
