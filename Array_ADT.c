@@ -25,7 +25,6 @@ void Display(ARRAY *p_array)
 void Insert(ARRAY *p_array)
 {
     int i;
-
     for(int i =0 ;i<p_array->length;i++)
         scanf("%d",p_array->A+i);
     return;
@@ -36,7 +35,8 @@ void Append(ARRAY *p_array,int element)
 {
     if(p_array->length < p_array->size)
     {
-        *(p_array->A + p_array->length++) = element;
+        *(p_array->A + p_array->length) = element;
+        p_array->length++;
     }
     else
     {
@@ -52,7 +52,7 @@ void Append(ARRAY *p_array,int element)
 void InsertPos(ARRAY *p_array,int element,int index)
 {
     int i = 0;
-    if(index >= 0 && index < p_array->length)
+    if(index >= 0 && index <= p_array->length)
     {
         for(i = p_array->length ; i>index; i--)
             *(p_array->A + i) = *(p_array->A + i-1);
@@ -70,7 +70,7 @@ void InsertPos(ARRAY *p_array,int element,int index)
     return;
 }
 
-/*Deleting the elemnt in an array*/
+/*Deleting the element in an array*/
 void Delete(ARRAY *p_array,int index)
 {
     int i    = 0;
@@ -147,6 +147,70 @@ void BinarySearch(ARRAY *p_array,int key)
     return;
 }
 
+/*Fetching element from index*/
+int GetElement(ARRAY *p_array,int index)
+{
+    if(index >= 0 && index < p_array->length)
+        return *(p_array->A+index);
+    else
+        return -1;
+}
+
+/*Replacing any element at given index*/
+void SetElement(ARRAY *p_array,int index,int value)
+{
+    if(index >= 0 && index < p_array->length)
+         *(p_array->A+index) = value;
+    else
+    {
+        printf("INVALID INDEX\n");
+        return;
+    }
+    printf("Array Elements after Replacing element %d at index %d\n",value,index);
+    Display(p_array);
+    return;
+}
+
+/*MAX & MIN Element in an Array*/
+void MaxMin(ARRAY *ptr)
+{
+    int max = *ptr->A;
+    int min = *ptr->A;
+    int i   = 0;
+
+    for (i = 0;i<ptr->length;i++)
+        if(*(ptr->A+i)>max)
+            max = *(ptr->A+i);
+
+    for (i = 0;i<ptr->length;i++)
+        if(*(ptr->A+i)<min)
+            min = *(ptr->A+i);
+    printf("Max Element in the Array is %d \n",max);
+    printf("Min Element in the Array is %d \n",min);
+
+    return;
+}
+
+/*sum of all the element*/
+int sumArray(ARRAY *ptr)
+{
+    int i   = 0;
+    int sum = 0;
+    for (i = 0; i < ptr->length;i++)
+        sum+=*(ptr->A + i);
+    return sum;
+}
+
+/*Avg of all the element*/
+double AvgArray(ARRAY *ptr)
+{
+    int i   = 0;
+    int sum = 0;
+    for (i = 0; i < ptr->length;i++)
+        sum+=*(ptr->A + i);
+    return sum/ptr->length;
+}
+
 int main()
 {
     ARRAY           *p_array = NULL ;
@@ -162,8 +226,13 @@ int main()
     scanf("%d",&p_array->size);
     printf("Enter length  of Array:");
     scanf("%d",&p_array->length);
-    p_array->A = (int *)malloc(p_array->size*sizeof(int));
-
+    if(p_array->length < p_array->size && p_array->size > 0)
+        p_array->A = (int *)malloc(p_array->size*sizeof(int));
+    else
+    {
+        printf("ERROR:Memory Allocation Failed\n");
+        exit (1);
+    }
     printf("INSERT Array Elements:\n");
     Insert(p_array);
 
@@ -174,14 +243,14 @@ int main()
     scanf("%d",&element);
     Append(p_array,element);
 
-    printf("Enter the Elemnt at any position:\n");
+    printf("Enter the Element at any position:\n");
     printf("Enter the index:\n");
     scanf("%d",&index);
     printf("Enter value to be inserted:\n");
     scanf("%d",&value);
     InsertPos(p_array,value,index);
 
-    printf("Delete the Elemnt from any position:\n");
+    printf("Delete the Element from any position:\n");
     printf("Enter the index:\n");
     scanf("%d",&index);
     Delete(p_array,index);
@@ -196,5 +265,26 @@ int main()
     scanf("%d",&value);
     BinarySearch(p_array,value);
 
+    printf("Element from given index :\n");
+    printf("Enter the index:\n");
+    scanf("%d",&index);
+    if(GetElement(p_array,index) == -1)
+        printf("INVALID INDEX\n");
+    else
+        printf("Element at index %d is %d\n",index,GetElement(p_array,index));
+
+    printf("Replacing Element at any position:\n");
+    printf("Enter the index:\n");
+    scanf("%d",&index);
+    printf("Enter value to be inserted:\n");
+    scanf("%d",&value);
+    SetElement(p_array,index,value);
+
+    printf("MAX and MIN Element in ARRAY->\n");
+    MaxMin(p_array); 
+
+    printf("Sum of all the Elements :%d\n",sumArray(p_array));
+    printf("Average of the Elements :%f\n",AvgArray(p_array));
+    free(p_array);
     return 0;
 }
