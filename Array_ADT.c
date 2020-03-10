@@ -211,6 +211,32 @@ double AvgArray(ARRAY *ptr)
     return sum/ptr->length;
 }
 
+/*Reversal of Array*/
+void Reverse(ARRAY *ptr)
+{
+    int mid  = 0;
+    int i    = 0;
+    int temp = 0;
+
+    printf("Original Array\n");
+    Display(ptr);
+
+    mid = ptr->length/2;
+
+    for(i = 0 ;i< mid ;i++)
+    {
+        temp = *(ptr->A + (ptr->length-1-i));
+        *(ptr->A + (ptr->length-1-i)) = *(ptr->A+i);
+        *(ptr->A+i) = temp;
+    } 
+
+    printf("Array elements after Reversal :\n ");
+    Display(ptr);
+
+    return;
+}
+
+
 int main()
 {
     ARRAY           *p_array = NULL ;
@@ -285,6 +311,9 @@ int main()
 
     printf("Sum of all the Elements :%d\n",sumArray(p_array));
     printf("Average of the Elements :%f\n",AvgArray(p_array));
+
+    Reverse(p_array);
+   
     free(p_array);
     return 0;
 }
