@@ -236,6 +236,83 @@ void Reverse(ARRAY *ptr)
     return;
 }
 
+/*Left Shift*/
+void LeftShift(ARRAY *ptr)
+{
+    int i = 0;
+
+    printf("Original Array\n");
+    Display(ptr);
+
+    for (i =0;i < ptr->length;i++)
+        *(ptr->A+i) = *(ptr->A+i+1);
+
+    *(ptr->A + ptr->length-1) = 0;
+
+    printf("Array elements after Left Shift :\n ");
+    Display(ptr);
+
+    return;
+}
+
+/*Left Rotate*/
+void LeftRotate(ARRAY *ptr)
+{
+    int i    = 0;
+    int temp = *(ptr->A);
+
+    printf("Original Array\n");
+    Display(ptr);
+
+    for (i =0;i < ptr->length;i++)
+        *(ptr->A+i) = *(ptr->A+i+1);
+
+    *(ptr->A + ptr->length-1) = temp;
+
+    printf("Array elements after Left Rotate :\n ");
+    Display(ptr);
+
+    return;
+}
+
+/*Right Shift*/
+void RightShift(ARRAY *ptr)
+{
+    int i = 0;
+
+    printf("Original Array:\n");
+    Display(ptr);
+
+    for (i = ptr->length-1;i>=0;i--)
+        *(ptr->A+i) = *(ptr->A+i-1);
+
+    *(ptr->A) = 0;
+
+    printf("Array elements after Right Shift :\n ");
+    Display(ptr);
+
+    return;
+}
+
+/*Right Rotate*/
+void RightRotate(ARRAY *ptr)
+{
+    int i    = 0;
+    int temp = *(ptr->A+ptr->length-1);
+
+    printf("Original Array:\n");
+    Display(ptr);
+
+    for (i = ptr->length-1;i>=0;i--)
+        *(ptr->A+i) = *(ptr->A+i-1);
+
+    *(ptr->A) = temp;
+
+    printf("Array elements after Right Rotate :\n ");
+    Display(ptr);
+
+    return;
+}
 
 int main()
 {
@@ -244,7 +321,6 @@ int main()
     int             index    = 0;
     int             value    = 0;
 
-    
     p_array = (ARRAY *)malloc(sizeof(ARRAY));
     memset(p_array,0,sizeof(ARRAY));
 
@@ -313,7 +389,12 @@ int main()
     printf("Average of the Elements :%f\n",AvgArray(p_array));
 
     Reverse(p_array);
+    LeftShift(p_array);
+    LeftRotate(p_array);
+    RightShift(p_array);
+    RightRotate(p_array);
    
+    free(p_array->A);
     free(p_array);
     return 0;
 }
