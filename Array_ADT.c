@@ -9,6 +9,24 @@ typedef struct
     int length;
 }ARRAY;
 
+/*Initializing Array*/
+void ArrayInit(ARRAY *ptr)
+{
+    printf("Enter max size of Array:");
+    scanf("%d",&ptr->size);
+    printf("Enter length  of Array:");
+    scanf("%d",&ptr->length);
+    if(ptr->length < ptr->size && ptr->size > 0)
+        ptr->A = (int *)malloc(ptr->size*sizeof(int));
+    else
+    {
+        printf("ERROR:Memory Allocation Failed\n");
+        exit (1);
+    }
+
+    return;
+}
+
 /*Display the array*/
 void Display(ARRAY *p_array)
 {
@@ -454,17 +472,7 @@ int main()
     p_arrayB = (ARRAY *)malloc(sizeof(ARRAY));
     memset(p_arrayB,0,sizeof(ARRAY));
 
-    printf("Enter max size of Array:");
-    scanf("%d",&p_array->size);
-    printf("Enter length  of Array:");
-    scanf("%d",&p_array->length);
-    if(p_array->length < p_array->size && p_array->size > 0)
-        p_array->A = (int *)malloc(p_array->size*sizeof(int));
-    else
-    {
-        printf("ERROR:Memory Allocation Failed\n");
-        exit (1);
-    }
+    ArrayInit(p_array);
 
     do
     {
@@ -618,17 +626,7 @@ int main()
             }
             case 21:
             {
-                printf("Enter max size of Array B:");
-                scanf("%d",&p_arrayB->size);
-                printf("Enter length  of Array B:");
-                scanf("%d",&p_arrayB->length);
-                if(p_arrayB->length < p_arrayB->size && p_arrayB->size > 0)
-                    p_arrayB->A = (int *)malloc(p_arrayB->size*sizeof(int));
-                else
-                {
-                    printf("ERROR:Memory Allocation Failed for ARRAY B\n");
-                    exit (1);
-                }
+                ArrayInit(p_arrayB);
                 printf("INSERT Array B Elements:\n");
                 Insert(p_arrayB);
 
