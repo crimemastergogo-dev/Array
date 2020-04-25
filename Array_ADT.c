@@ -456,6 +456,33 @@ void Merege(ARRAY *ptr1,ARRAY *ptr2)
     return;
 }
 
+/*Unique in Array*/
+int UniqueInArray(ARRAY *p_array)
+{
+    int outer,inner,unique,is_unique,len;
+
+    len = p_array->length;
+
+    if (len <= 0) 
+        return 0;
+
+    unique = 1;
+
+    for ( outer = 1; outer < len; outer++)
+    {
+        is_unique = 1;
+        for ( inner = 0; is_unique && inner <= outer; inner++)
+        {  
+            if (p_array->A[inner] == p_array->A[outer])
+                is_unique = 0;
+        }
+        if (is_unique)
+            unique++;
+
+    }
+    return unique;
+}
+
 int main()
 {
     ARRAY           *p_array  = NULL ;
@@ -486,7 +513,7 @@ int main()
         printf("\n12.AVG of ELE\n13.REVERSE\n14.LEFT SHIFT");
         printf("\n15.LEFT ROTATE\n16.RIGHT SHIFT\n17.RIGHT ROTATE");
         printf("\n18.CHECK IF SORTED\n19.INSERT IN SORTED");
-        printf("\n20.SPLIT -ve and +ve\n21.MERGE TWO ARRAY\n");
+        printf("\n20.SPLIT -ve and +ve\n21.MERGE TWO ARRAY\n22.UNIQUE NO. In ARRAY\n");
         printf("Enter choice:");
         scanf("%d",&choice);
         switch(choice)
@@ -636,12 +663,32 @@ int main()
                 Merege(p_array,p_arrayB);
                 break;
             }
+            case 22:
+            {
+                int ret_val = 0;
+                printf("INSERT ELEMENT IN ARRAY\n");
+                Insert(p_array);
+                printf("DISPLAY Array Elements:\n");
+                Display(p_array);
+                ret_val = UniqueInArray(p_array); 
+                if (0 == ret_val)
+                {
+                    printf("EMPTY ARRAY...!!!");
+                }
+                else
+                {
+                    printf("No. of Unique entries : %d\n",ret_val);
+                }
+                break;
+            }
 
             default:
             printf("WRONG OPTION\n");
         }
         printf("Do you want to continue (y/n):");
+
         scanf("%c",&ch);
+
     }while(ch == 'n');
 
     free(p_array->A);
