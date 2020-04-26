@@ -3,6 +3,8 @@
 #include<ctype.h>
 #define MAX_STRING_LIMIT 1024
 
+typedef enum{False,True} MyBool;
+
 int MyStringLen(char *ptr)
 {
     int i = 0;
@@ -67,16 +69,18 @@ void ToggleString(char *chr)
 
 int word_count(char *ptr)
 {
-    int count = 1;
+    int count = 0;
     char *temp = ptr;
-    while(*temp != '\0')
+    int i =0;
+    while(temp[i] != '\0')
     {
-        if (*temp == ' ')
+        if ((temp[i] == ' ')&&(temp[i-1] != ' '))
             count++;
-        temp++;
+        i++;
     }
-    return count;
+    return count+1;
 }
+
 int sentence_count(char *ptr)
 {
     int count = 0;
@@ -89,6 +93,7 @@ int sentence_count(char *ptr)
     }
     return count;
 }
+
 int para_count(char *ptr)
 {
     int count = 0;
@@ -100,6 +105,137 @@ int para_count(char *ptr)
         temp++;
     }
     return count;
+}
+
+int isAlphaNumereic(char *ptr)
+{
+    char *temp = ptr;
+    MyBool NumericFound = False;
+    int count = 0;
+    while(*temp != '\0')
+    {
+        if ((*temp >= 48) && (*temp <= 57))
+        {
+            NumericFound = True;
+            count++;
+        }
+        temp++;
+    }
+    if(False != NumericFound)
+    {
+        return count;
+    }
+
+    return 0;
+}
+
+int isVowel(char *ptr)
+{
+    char *temp = ptr;
+    int count  = 0;
+    while(*temp !='\0')
+    {
+        if ((*temp >= 65) && (*temp<=90) || ((*temp >= 97) && (*temp<=122)))
+        {
+            switch(*temp)
+            {
+                case 'a':
+                case 'e':
+                case 'i':
+                case 'o':
+                case 'u':
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':count++;
+                         break;
+                default:
+                         break;
+            }
+        }
+        temp++;
+    }
+    if(0 != count)
+    {
+        return count;
+    }
+    return 0;
+}
+
+int isConsonent(char *ptr)
+{
+    char *temp = ptr;
+    int count  = 0;
+    while(*temp !='\0')
+    {
+        if ((*temp >= 65) && (*temp<=90) || ((*temp >= 97) && (*temp<=122)))
+        {
+            switch(*temp)
+            {
+                case 'a':
+                case 'e':
+                case 'i':
+                case 'o':
+                case 'u':
+                case 'A':
+                case 'E':
+                case 'I':
+                case 'O':
+                case 'U':
+                break;
+                default:
+                count++;
+            }
+        }
+        temp++;
+    }
+    if(0 != count)
+    {
+        return count;
+    }
+    return 0;
+}
+
+char *MyStringRev(char *ptr)
+{
+    char *temp = ptr,aux;
+    int i=0,len=0;
+    len = MyStringLen(ptr)-1;
+    while(*temp != '\0'){
+        temp++;
+    }
+    temp--;
+
+    //while(*ptr=*temp && *temp-- !='\0' && *ptr++ !='\0');
+    i = 0;
+    if(len%2==0)
+    {
+        while(i < len/2)
+        {
+            aux = *temp;
+            *temp = *ptr;
+            *ptr = aux;
+            i++;
+            temp--;ptr++;
+        }
+        ptr -= (len/2)-1; 
+    }
+    else
+    {
+        while(i < (len/2)+1)
+        {
+            aux = *temp;
+            *temp = *ptr;
+            *ptr = aux;
+            i++;
+            temp--;ptr++;
+        }
+        ptr -= (len/2); 
+    }
+
+
+    return ptr;
 }
 
 int main()
@@ -121,6 +257,8 @@ int main()
         printf("Menue Option :\n");
         printf("1.String Length\n2.Lower to Upper case\n3.Upper to Lower\n4.Size of\n");
         printf("5.Toggle case\n6.No. of words,sentence,paragraph\n");
+        printf("7.Is alpha numeric\n8.Vowel and Vowel count\n9.Consonent and consonent count\n");
+        printf("10.String Reverse\n");
         printf("Enter choice:");
         scanf("%d",&choice);
         switch(choice)
@@ -194,6 +332,50 @@ int main()
                 printf("No. of words in the string = %d\n",word_count(string));
                 printf("No. of sentence in the string = %d\n",sentence_count(string));
                 printf("No. of paragraph in the string = %d\n",para_count(string));
+                break;
+            }
+            case 7:
+            {
+                if (0 == isAlphaNumereic(string))
+                {
+                    printf("Not Alpha-Numeric\n");
+                }
+                else
+                {
+                    printf("String is Alpha Numeric and count = %d\n",isAlphaNumereic(string));
+                }
+                break;
+            }
+            case 8:
+            {
+                if(0 == isVowel(string))
+                {
+                    printf("No vowel present\n");
+                }
+                else
+                {
+                    printf("vowel present and count = %d\n",isVowel(string));
+                }
+                break;
+            }
+            case 9:
+            {
+                 if(0 == isConsonent(string))
+                {
+                    printf("No consonent present\n");
+                }
+                else
+                {
+                    printf("consonent present and count = %d\n",isConsonent(string));
+                }
+                break;
+
+            }
+            case 10:
+            {
+
+                printf("Reverse String :%s\n",MyStringRev(string));
+
                 break;
             }
             default: printf("Wrong Choice\n");
