@@ -4,7 +4,11 @@
 #include<ctype.h>
 #define MAX_STRING_LIMIT 1024
 
-typedef enum{False,True} MyBool;
+typedef enum {False,True} MyBool;
+typedef char    IntType_8;
+typedef short   IntType_16;
+typedef int     IntType_32;
+typedef long    IntTypr_64;
 
 typedef struct
 {
@@ -237,20 +241,18 @@ int isConsonent(String *ptr)
     return 0;
 }
 
-char *MyStringRev(String *ptr)
+void MyStringRev(String *ptr)
 {
     int len=0,i=0;
     char aux;
-    len = MyStringLen(ptr);
+    len = MyStringLen(ptr)-1;
 
-    for (i = 0 ; i<len/2;i++)
+    for (i = 0 ;i<len;i++,len--)
     {
-        aux = ptr->chr[len-i];
-        ptr->chr[len-i] = ptr->chr[i];
-        ptr->chr[i] = aux;
+        aux = ptr->chr[i];
+        ptr->chr[i] = ptr->chr[len];
+        ptr->chr[len] = aux;
     }
-
-    return ptr->chr;
 }
 
 int MyStringcmp(String *str1,String *str2)
@@ -303,6 +305,96 @@ int MyStringcmpi(String *str1,String *str2)
     return 0;
 }
 
+void duplicateInString(String *ptr)
+{
+    int Hash[26]= {0};
+    int i=0,j=0;
+    MyBool isDuplicate = False ;
+
+    for (i = 0 ;ptr->chr[i]!='\0';i++)
+    {
+        Hash[ptr->chr[i]-97]+=1;
+    }
+    for (j= 0 ;j<26;j++)
+    {
+        if (Hash[j]>1)
+        {
+            printf("Character repeadted :%c[%d]\n",j+97,Hash[j]);
+            isDuplicate = True;
+        }
+    }
+    if(False == isDuplicate)
+    {
+        printf("No Duplicate char\n");
+    }
+}
+void duplicateInStringBitwise(String *ptr)
+{
+    IntType_32 bitmask=0,bitmerge = 0,i=0;
+    MyBool isDuplicate = False ;
+
+    for (i = 0; ptr->chr[i]!='\0';i++)
+    {
+        bitmask = 1;
+        bitmask = bitmask<<ptr->chr[i]-97;
+
+        if (bitmask & bitmerge )
+        {
+            printf("Character repeadted :%c\n",ptr->chr[i]);
+            MyBool isDuplicate = True ;
+        }
+        else
+        {
+            bitmerge = bitmask | bitmerge;
+        }
+    }
+    if(False == isDuplicate)
+    {
+        printf("No Duplicate char\n");
+    }
+}
+
+int  AnagramString(String *ptr,String *ptr1)
+{
+    int Hash[26]= {0};
+    int i=0,j=0;
+
+    int len = MyStringLen(ptr);
+    int len1 = MyStringLen(ptr1);
+
+    if (len !=len1)
+    {
+        return 0;
+    }
+
+    for (i = 0 ;ptr->chr[i]!='\0';i++)
+    {
+        Hash[ptr->chr[i]-97]+=1;
+    }
+
+    for (i = 0; ptr1->chr[i]!='\0'; i++)
+    {
+        Hash[ptr1->chr[i]-97]-=1;
+    }
+
+    for (j =0 ;j<26;j++)
+    {
+        if (Hash[j]<0)
+        {
+            return 0;
+            break;
+        }
+    }
+
+    return 1;
+}
+
+void PermutationString(String *ptr,int strlen)
+{
+    static int []
+
+}
+
 int main()
 {
     String *string     = NULL; 
@@ -329,7 +421,8 @@ int main()
         fprintf(stdout,"1.String Length\n2.Lower to Upper case\n3.Upper to Lower\n4.Size of\n");
         fprintf(stdout,"5.Toggle case\n6.No. of words,sentence,paragraph\n");
         fprintf(stdout,"7.Is alpha numeric\n8.Vowel and Vowel count\n9.Consonent and consonent count\n");
-        fprintf(stdout,"10.String Reverse\n11.Comparing to string\n");
+        fprintf(stdout,"10.String Reverse\n11.Comparing to string\n12.Palindrome String\n");
+        fprintf(stdout,"13.Duplicate in a String\n14.Anagram\n");
         fprintf(stdout,"Enter choice:");
         scanf("%d",&choice);
         getchar();
@@ -443,7 +536,8 @@ int main()
             }
             case 10:
             {
-                printf("Reverse String :%s\n",MyStringRev(string));
+                MyStringRev(string);
+                fprintf(stdout,"Reversed String : %s\n",DisplayString(string));
                 break;
             }
             case 11:
@@ -501,6 +595,90 @@ int main()
                     string2 = NULL;
                 }
                 break; 
+            }
+            case 12:
+            {
+                String *string3 = NULL;
+                string3 = (String *)malloc(sizeof(String));
+                if (NULL == string3)
+                {
+                    fprintf(stderr,"ERROR:Memory Allocation Failed\n");
+                    exit (1);
+                }
+                memset(string3,0,sizeof(String));
+
+                fprintf(stdout,"Enter String to compare :");
+                getString(string3);
+
+                fprintf(stdout,"Entered  String1 : %s\n",DisplayString(string3));
+
+                MyStringRev(string3);
+
+                if (MyStringcmp(string,string3)==0)
+                {
+                    fprintf(stdout,"String %s and %s palindrome \n",
+                            DisplayString(string),DisplayString(string3));
+                }
+                else
+                {
+                    fprintf(stdout,"String %s and %s are not palindrome \n",
+                            DisplayString(string),DisplayString(string3));
+                }
+
+                if ((NULL != string3->chr) &&
+                        (NULL != string3))
+                {
+                    free(string3->chr);
+                    string3->chr = NULL;
+                    free(string3);
+                    string3 = NULL;
+                }
+                break;
+            }
+            case 13:
+            {
+                fprintf(stdout,"Duplicate String Using Hashmap \n");
+                duplicateInString(string);
+                fprintf(stdout,"Duplicate String Using Bitwise Operator \n");
+                duplicateInStringBitwise(string);
+                break;
+            }
+            case 14:
+            {
+                String *string4 = NULL;
+                string4 = (String *)malloc(sizeof(String));
+                if (NULL == string4)
+                {
+                    fprintf(stderr,"ERROR:Memory Allocation Failed\n");
+                    exit (1);
+                }
+                memset(string4,0,sizeof(String));
+
+                fprintf(stdout,"Enter String to compare :");
+                getString(string4);
+
+                fprintf(stdout,"Entered  String1 : %s\n",DisplayString(string4));
+
+                if (0 == AnagramString(string,string4))
+                {
+                    fprintf(stdout,"String %s and %s is not an Anagram \n",
+                            DisplayString(string),DisplayString(string4));
+                }
+                else
+                {
+                    fprintf(stdout,"String %s and %s is an Anagram \n",
+                            DisplayString(string),DisplayString(string4));
+                }
+
+                if ((NULL != string4->chr) &&
+                        (NULL != string4))
+                {
+                    free(string4->chr);
+                    string4->chr = NULL;
+                    free(string4);
+                    string4 = NULL;
+                }
+                break;
             }
             default: printf("Wrong Choice\n");
         }
