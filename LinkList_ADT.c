@@ -42,12 +42,11 @@ void DisplayLinkList(struct node *ptr)
 
     if (NULL != ptr)
     {
-        while(NULL != ptr->next)
+        while(NULL != ptr)
         {
-            printf("%d--->",ptr->data);
             ptr = ptr->next;
         }
-        printf("%d-->NULL\n",ptr->data);
+        printf("NULL\n");
     }
     else
     {
@@ -82,12 +81,11 @@ int NodeCount(struct node *ptr)
     int count =0;
     if (NULL != ptr)
     {
-        count = 1;
-        while(NULL != ptr->next)
+        while(NULL != ptr)
         {
+            count ++;
             printf("%d--->",ptr->data);
             ptr = ptr->next;
-            count ++;
         }
     }
     else
@@ -98,20 +96,26 @@ int NodeCount(struct node *ptr)
 
 }
 
-void SearchElement(struct node *ptr, int value)
+void SearchElement(struct node **ptr, int value)
 {
+    struct node *tail    = NULL;
+    struct node *current = NULL;
+    current = *ptr;
     int count =0;
     if (NULL != ptr)
     {
-        count = 1;
-        while(NULL != ptr->next)
+        while(NULL != current)
         {
-            count ++;
-            if (value == ptr->data)
+            count++;
+            if (value == current->data)
             {
                 printf("Element %d found at node %d\n",value,count);
+                tail->next = current->next;
+                current->next = *ptr;
+                *ptr = current ;
             }
-            ptr = ptr->next;
+            tail = current;
+            current = current->next;
         }
     }
     else
@@ -125,7 +129,7 @@ int SumLinkList (struct node *ptr)
     int sum = 0;
     if (NULL != ptr)
     {
-        while(NULL != ptr->next)
+        while(NULL != ptr)
         {
             sum += ptr->data;
             ptr = ptr->next;
@@ -135,7 +139,7 @@ int SumLinkList (struct node *ptr)
     {
         printf("EMPTY LINK LIST\n");
     }
-    return sum + ptr->data;
+    return sum;
 
 }
 
@@ -146,7 +150,7 @@ void MaxMinLinkList (struct node *ptr)
     int min = ptr->data;
     if (NULL != ptr)
     {
-        do
+        while(NULL != ptr)
         {
             if (min > ptr->data)
             {
@@ -158,16 +162,16 @@ void MaxMinLinkList (struct node *ptr)
             }
 
             ptr = ptr->next;
-        }while(NULL != ptr->next);
+        }
+
         printf("Max Element = %d\nMin Element = %d\n",max,min);
     }
     else
     {
         printf("EMPTY LINK LIST\n");
     }
-
-
 }
+
 int main()
 {
     struct node *head = NULL;
@@ -214,7 +218,7 @@ int main()
             
                 printf("Enter element for searching : ");
                 scanf("%d",&ele);
-                SearchElement(head,ele);
+                SearchElement(&head,ele);
                 break;
             }
             case 6:
