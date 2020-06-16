@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
+typedef enum {False,True} MyBool;
 struct node 
 {
     int data;
@@ -17,9 +19,12 @@ void InsertAtEnd(struct node **ptr,int value)
 
     if (NULL == temp)
     {
+        printf("Memory Allocation failed ");
         free(temp);
         temp =NULL;
+        exit(1);
     }
+    memset(temp,0,sizeof(struct node));
 
     temp->data = value;
     temp->next = NULL;
@@ -44,6 +49,7 @@ void DisplayLinkList(struct node *ptr)
     {
         while(NULL != ptr)
         {
+            printf("%d-->",ptr->data);
             ptr = ptr->next;
         }
         printf("NULL\n");
@@ -87,6 +93,7 @@ int NodeCount(struct node *ptr)
             printf("%d--->",ptr->data);
             ptr = ptr->next;
         }
+        printf("NULL\n");
     }
     else
     {
@@ -96,31 +103,30 @@ int NodeCount(struct node *ptr)
 
 }
 
-void SearchElement(struct node **ptr, int value)
+void SearchElement(struct node *ptr, int value)
 {
-    struct node *tail    = NULL;
-    struct node *current = NULL;
-    current = *ptr;
-    int count =0;
+    int count           = 0;
+    MyBool isValueFound = False;
     if (NULL != ptr)
     {
-        while(NULL != current)
+        while(NULL != ptr)
         {
             count++;
-            if (value == current->data)
+            if (value == ptr->data)
             {
                 printf("Element %d found at node %d\n",value,count);
-                tail->next = current->next;
-                current->next = *ptr;
-                *ptr = current ;
+                isValueFound = True;
             }
-            tail = current;
-            current = current->next;
+            ptr = ptr->next;
         }
     }
     else
     {
         printf("EMPTY LINK LIST\n");
+    }
+    if (True != isValueFound)
+    {
+        printf("Element %d not found \n",value);
     }
 }
 
@@ -172,15 +178,97 @@ void MaxMinLinkList (struct node *ptr)
     }
 }
 
+void InsertAtBeg(struct node **ptr,int value)
+{
+    struct node *temp = NULL;
+    temp = (struct node *)malloc(sizeof(struct node ));
+
+    if (NULL == temp)
+    {
+        printf("Memory Allocation failed ");
+        free(temp);
+        temp =NULL;
+        exit(1);
+    }
+    memset(temp,0,sizeof(struct node));
+    temp->data = value;
+    temp->next = NULL;
+
+    if (NULL == *ptr)
+    {
+        printf ("Empty link List Adding first element \n");
+        *ptr = temp;
+    }
+    else 
+    {
+        printf ("Link List exist Adding Element at the beg \n");
+        temp->next = *ptr;
+        *ptr = temp;
+    }
+
+}
+
+void InsertAtPos(struct node **ptr,int value,int pos)
+{
+    struct node *temp    = NULL;
+    struct node *current = NULL;
+    int currentNode      = 0;
+    temp = (struct node *)malloc(sizeof(struct node ));
+
+    if (NULL == temp)
+    {
+        printf("Memory Allocation failed ");
+        free(temp);
+        temp =NULL;
+        exit(1);
+    }
+    memset(temp,0,sizeof(struct node));
+    temp->data = value;
+    temp->next = NULL;
+
+    current = *ptr;
+    while(NULL !=current)
+    {
+        if (1 == pos)
+        {
+            if (NULL == *ptr)
+            {
+                printf ("Empty link List Adding first element \n");
+                *ptr = temp;
+            }
+            else 
+            {
+                printf ("Link List exist Adding Element at the beg \n");
+                temp->next = *ptr;
+                *ptr = temp;
+            }
+        }
+        if ((pos == currentNode-1) && ((currentNode-1) >=1))
+        {
+            temp->next    = current->next;
+            current->next = temp;
+        }
+        currentNode++;
+        current = current->next;
+    }
+}
+
 int main()
 {
     struct node *head = NULL;
-    int choice,value,cont,ele;
+    int choice = 0; 
+    int value  = 0; 
+    int cont   = 0; 
+    int ele    = 0;
+    int pos    = 0;
 
     do
     {
         printf("1.InsertAtEnd\n2.Display\n3.Display using Recursion\n");
         printf("4.No. of nodes\n5.Searching\n6.Sum of LL\n7.Max and Min\n");
+        printf("8.Insert at beg\n9.Insert at pos\n10.Delete at pos\n11.Delete at beg\n");
+        printf("12.Delete at end\n13.Insert in sorted list\n14.check if link list is sorted\n");
+        printf("15.Delete by data\n");
         printf("Enter choice:");
         scanf("%d",&choice);
         switch(choice)
@@ -218,7 +306,7 @@ int main()
             
                 printf("Enter element for searching : ");
                 scanf("%d",&ele);
-                SearchElement(&head,ele);
+                SearchElement(head,ele);
                 break;
             }
             case 6:
@@ -232,6 +320,53 @@ int main()
                 MaxMinLinkList(head);
                 break;
             }
+            case 8:
+            {
+                printf("Enter Data to be inserted \n");
+                scanf("%d",&value);
+                InsertAtBeg(&head,value);
+                break;
+            }
+            case 9:
+            {
+                printf("Enter Data to be inserted :");
+                scanf("%d",&value);
+                printf("Enter Pos : ");
+                scanf("%d",&pos);
+                InsertAtPos(&head,value,pos);
+                break;
+            }
+            case 10:
+            {
+                MaxMinLinkList(head);
+                break;
+            }
+            case 11:
+            {
+                MaxMinLinkList(head);
+                break;
+            }
+            case 12:
+            {
+                MaxMinLinkList(head);
+                break;
+            }
+            case 13:
+            {
+                MaxMinLinkList(head);
+                break;
+            }
+            case 14:
+            {
+                MaxMinLinkList(head);
+                break;
+            }
+            case 15:
+            {
+                MaxMinLinkList(head);
+                break;
+            }
+
             default:
                 printf("Wrong Choice : \n");
         
@@ -239,6 +374,13 @@ int main()
         printf("Do you want to contd. (1/0):");
         scanf("%d",&cont);
     }while(1 == cont);
+
+    if (NULL != head)
+    {
+        printf("Freeing Link List\n");
+        free(head);
+        head = NULL;
+    }
 
     return 0;
 }
