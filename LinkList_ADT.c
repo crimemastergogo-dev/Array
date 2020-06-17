@@ -20,8 +20,6 @@ void InsertAtEnd(struct node **ptr,int value)
     if (NULL == temp)
     {
         printf("Memory Allocation failed ");
-        free(temp);
-        temp =NULL;
         exit(1);
     }
     memset(temp,0,sizeof(struct node));
@@ -186,8 +184,6 @@ void InsertAtBeg(struct node **ptr,int value)
     if (NULL == temp)
     {
         printf("Memory Allocation failed ");
-        free(temp);
-        temp =NULL;
         exit(1);
     }
     memset(temp,0,sizeof(struct node));
@@ -212,14 +208,12 @@ void InsertAtPos(struct node **ptr,int value,int pos)
 {
     struct node *temp    = NULL;
     struct node *current = NULL;
-    int currentNode      = 0;
+    int index            = 0;
     temp = (struct node *)malloc(sizeof(struct node ));
 
     if (NULL == temp)
     {
         printf("Memory Allocation failed ");
-        free(temp);
-        temp =NULL;
         exit(1);
     }
     memset(temp,0,sizeof(struct node));
@@ -227,30 +221,110 @@ void InsertAtPos(struct node **ptr,int value,int pos)
     temp->next = NULL;
 
     current = *ptr;
-    while(NULL !=current)
+    if (NULL !=current)
     {
-        if (1 == pos)
+        if (1 == pos) 
         {
-            if (NULL == *ptr)
-            {
-                printf ("Empty link List Adding first element \n");
-                *ptr = temp;
-            }
-            else 
-            {
-                printf ("Link List exist Adding Element at the beg \n");
-                temp->next = *ptr;
-                *ptr = temp;
-            }
+            InsertAtBeg(ptr,value);
         }
-        if ((pos == currentNode-1) && ((currentNode-1) >=1))
+        else
         {
+            while(++index < pos-1)
+            {
+                current = current->next;
+            }
             temp->next    = current->next;
             current->next = temp;
         }
-        currentNode++;
-        current = current->next;
     }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+    }
+}
+
+void DeleteAtend(struct node **ptr)
+{
+    struct node *temp    = NULL;
+    struct node *current = NULL;
+    
+    current = *ptr;
+    if(NULL!= *ptr)
+    {
+        while(current->next !=NULL)
+        {
+            temp       = current;
+            current    = current->next;
+        }
+        temp->next = current->next;
+        free(current);
+        current = NULL;
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+    }
+}
+
+void DeleteAtBeg(struct node **ptr)
+{
+    struct node *temp    = NULL;
+    struct node *current = NULL;
+    current = *ptr;
+    if (NULL != *ptr)
+    {
+        temp = current;
+        *ptr = current->next;
+        free(temp);
+        temp = NULL;
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+    }
+}
+
+void DeleteAtPos(struct node **ptr,int pos)
+{
+    struct node *temp    = NULL;
+    struct node *current = NULL;
+    int index            = 0;
+    int count            = 0;
+    count = NodeCount(*ptr);
+    current = *ptr;
+    if (NULL != *ptr)
+    {
+        if (1 == pos)
+        {
+            DeleteAtBeg(ptr);
+        }
+        else if (count = pos)
+        {
+            DeleteAtend(ptr);
+        }
+        else
+        {
+            while (++index < pos)
+            {
+                temp       = current;
+                current    = current->next;
+            }
+            temp->next = current->next;
+            free(current);
+            current = NULL;
+        }
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+    }
+}
+
+int isSortedLinkList(struct node *ptr)
+{
+    int index = 0;
+    for (:w)
+
 }
 
 int main()
@@ -338,17 +412,19 @@ int main()
             }
             case 10:
             {
-                MaxMinLinkList(head);
+                printf("Enter Pos : ");
+                scanf("%d",&pos);
+                DeleteAtPos(&head,pos);
                 break;
             }
             case 11:
             {
-                MaxMinLinkList(head);
+                DeleteAtBeg(&head);
                 break;
             }
             case 12:
             {
-                MaxMinLinkList(head);
+                DeleteAtend(&head);
                 break;
             }
             case 13:
@@ -358,7 +434,14 @@ int main()
             }
             case 14:
             {
-                MaxMinLinkList(head);
+                if (0 == isSortedLinkList(struct node *ptr))
+                {
+                    printf("Sorted List \n");
+                }
+                else
+                {
+                    printf("Sorted List \n");
+                }
                 break;
             }
             case 15:
