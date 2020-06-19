@@ -1,0 +1,20 @@
+This file contains the steps to use gdb as debugging tool
+
+1.install gdb
+
+2. set these two parameters in vimrc file
+  ->let g:termdebug_popup = 0
+  ->let g:termdebug_wide = 163
+
+3. compile the program with -g command
+   e.g  gcc Linklist_ADT.c -g -o linklist
+
+4. open vim
+
+5. Load following plugin command in vim
+    :packadd termdebug
+
+6. Load your program using following command
+  :Termdebug linklist (executable file name)
+
+7. Enjoy debugging

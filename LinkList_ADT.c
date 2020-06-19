@@ -351,12 +351,40 @@ int isSortedLinkList(struct node **ptr)
             return 1;
 }
 
+void sortingLinkList(struct node **ptr)
+{
+    struct node *current = NULL;
+    struct node *ahead   = NULL;
+    int temp             = 0;
+
+    if (NULL != *ptr)
+    {
+        for (current = *ptr ; current != NULL; current=current->next)
+        {
+            for (ahead = current->next; ahead != NULL; ahead = ahead->next)
+            {
+                if (ahead->data < current->data)
+                {
+                    temp          = ahead->data;
+                    ahead->data   = current->data;
+                    current->data = temp;
+                }
+            }
+        }
+    }
+
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+}
 
 void InsertInSorted(struct node **ptr,int value)
 {
     struct node *temp    = NULL;
     struct node *current = NULL;
-    int comparator       = value;
+    struct node *trailP  = NULL;
     temp = (struct node *)malloc(sizeof(struct node));
 
     if (NULL == temp)
@@ -370,16 +398,55 @@ void InsertInSorted(struct node **ptr,int value)
     temp->next = NULL;
 
     current = *ptr;
+
+    
     if (NULL != *ptr)
     {
-        while(NULL != current)
+        if (0 != isSortedLinkList(ptr))
         {
-            if (comparator > current->data)
-            {
-                break;
-            }
-            comparator = current->data;
-            current = current->next;
+            printf("Link List is not sorted....!!!\nSorting LinkList...!!!\n");
+            sortingLinkList(ptr);
+            printf("Link List after sorting\n");
+            DisplayLinkList(*ptr);
+        }
+
+        while((NULL != current) && value > current->data)
+        {
+            trailP     = current;
+            current    = current->next;
+        }
+        temp->next   = trailP->next;
+        trailP->next = temp;
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+}
+
+void DeleteByValue(struct node **ptr,int value)
+{
+    struct node *temp    = NULL;
+    struct node *current = NULL;
+    struct node *trailP  = NULL;
+
+    current = *ptr;
+    if (NULL != *ptr)
+    {
+        while((NULL != current) && value != current->data)
+        {
+            trailP     = current;
+            current    = current->next;
+        }
+
+        trailP->next = current->next;
+        temp         = current;
+
+        if (NULL != temp)
+        {
+            free(temp);
+            temp = NULL;
         }
     }
     else
@@ -387,9 +454,60 @@ void InsertInSorted(struct node **ptr,int value)
         printf("EMPTY LINK LIST\n");
         exit(1);
     }
-
-
 }
+
+
+void removingDuplicateNode(struct node **ptr)
+{
+    struct node *current   = NULL;
+    struct node *ahead     = NULL;
+    struct node *temp      = NULL;
+    struct node *trailP    = NULL;
+    MyBool isDuplicate     = False;
+
+    if (NULL != *ptr)
+    {
+        current = *ptr;
+        while(NULL != current)
+        {
+            isDuplicate = False;
+            ahead  = current->next;
+            trailP = current; 
+            while (NULL != ahead )
+            {
+                if (current->data == ahead->data)
+                {
+                    isDuplicate = True;
+                    break;
+                }
+                else
+                {
+                    trailP = ahead;
+                    ahead  = ahead->next;
+                }
+            }
+            if (True == isDuplicate)
+            {
+                trailP->next = ahead->next;
+                temp         = ahead;
+
+                if (NULL != temp)
+                {
+                    free(temp);
+                    temp = NULL;
+                }
+            }
+            current = current->next;
+        }
+    }
+
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+}
+
 int main()
 {
     struct node *head = NULL;
@@ -405,7 +523,7 @@ int main()
         printf("4.No. of nodes\n5.Searching\n6.Sum of LL\n7.Max and Min\n");
         printf("8.Insert at beg\n9.Insert at pos\n10.Delete at pos\n11.Delete at beg\n");
         printf("12.Delete at end\n13.Insert in sorted list\n14.check if link list is sorted\n");
-        printf("15.Delete by data\n");
+        printf("15.Delete by data\n16.Sort Link List\n17.Removing Duplicate node\n");
         printf("Enter choice:");
         scanf("%d",&choice);
         switch(choice)
@@ -495,6 +613,8 @@ int main()
                 printf("Enter Data to be inserted \n");
                 scanf("%d",&value);
                 InsertInSorted(&head,value);
+                printf("Link List After Inserting\n");
+                DisplayLinkList(head);
                 break;
             }
             case 14:
@@ -511,10 +631,33 @@ int main()
             }
             case 15:
             {
-                MaxMinLinkList(head);
+                printf("Enter Data of node to be deleted \n");
+                scanf("%d",&value);
+                printf("Link List Before Deletion\n");
+                DisplayLinkList(head);
+                DeleteByValue(&head,value);
+                printf("Link List after Deletion\n");
+                DisplayLinkList(head);
                 break;
             }
-
+            case 16:
+            {
+                printf("Link List Before sorting\n");
+                DisplayLinkList(head);
+                sortingLinkList(&head);
+                printf("Link List after sorting\n");
+                DisplayLinkList(head);
+                break;
+            }
+            case 17:
+            {
+                printf("Link List Before Removing Duplicate Node\n");
+                DisplayLinkList(head);
+                removingDuplicateNode(&head);
+                printf("Link List after Removing Duplicate Node\n");
+                DisplayLinkList(head);
+                break;
+            }
             default:
                 printf("Wrong Choice : \n");
         
