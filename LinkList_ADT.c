@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<limits.h>
 
 typedef enum {False,True} MyBool;
 struct node 
@@ -320,13 +321,75 @@ void DeleteAtPos(struct node **ptr,int pos)
     }
 }
 
-int isSortedLinkList(struct node *ptr)
+int isSortedLinkList(struct node **ptr)
 {
-    int index = 0;
-    for (:w)
-
+    struct node *current = *ptr;
+    int index            = 0;
+    int comparator       = INT_MIN;
+    MyBool isSorted      = True;
+    if (NULL != *ptr)
+    {
+        while(NULL != current)
+        {
+            if (comparator > current->data)
+            {
+                isSorted = False;
+                break;
+            }
+            comparator = current->data;
+            current = current->next;
+        }
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+        if(True == isSorted)
+            return 0;
+        else
+            return 1;
 }
 
+
+void InsertInSorted(struct node **ptr,int value)
+{
+    struct node *temp    = NULL;
+    struct node *current = NULL;
+    int comparator       = value;
+    temp = (struct node *)malloc(sizeof(struct node));
+
+    if (NULL == temp)
+    {
+        printf("Memory Allocation failed ");
+        exit(1);
+    }
+    memset(temp,0,sizeof(struct node));
+
+    temp->data = value;
+    temp->next = NULL;
+
+    current = *ptr;
+    if (NULL != *ptr)
+    {
+        while(NULL != current)
+        {
+            if (comparator > current->data)
+            {
+                break;
+            }
+            comparator = current->data;
+            current = current->next;
+        }
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+
+
+}
 int main()
 {
     struct node *head = NULL;
@@ -429,18 +492,20 @@ int main()
             }
             case 13:
             {
-                MaxMinLinkList(head);
+                printf("Enter Data to be inserted \n");
+                scanf("%d",&value);
+                InsertInSorted(&head,value);
                 break;
             }
             case 14:
             {
-                if (0 == isSortedLinkList(struct node *ptr))
+                if (0 == isSortedLinkList(&head))
                 {
                     printf("Sorted List \n");
                 }
                 else
                 {
-                    printf("Sorted List \n");
+                    printf("Un-Sorted List \n");
                 }
                 break;
             }
