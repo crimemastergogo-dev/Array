@@ -60,7 +60,7 @@ void DisplayCircularDoubllyLinkList(struct node *ptr)
             printf("%d<-->",ptr->data);
             ptr = ptr->next;
         }while(first != ptr);
-        printf("%d<-->%d\n",ptr->data,first->data);
+        printf("%d\n",ptr->data);
     }
     else
     {
@@ -76,7 +76,7 @@ void DeleteCircularDoubllyLinkList(struct node **ptr)
     current = *ptr;
     if(NULL!= *ptr)
     {
-        while(current->next !=NULL)
+        while(current->next != *ptr)
         {
             temp       = current;
             current    = current->next;
@@ -139,7 +139,7 @@ int main()
 
     if (NULL != head)
     {
-        printf("Freeing Doublly Link List\n");
+        printf("Circular Freeing Doublly Link List\n");
         free(head);
         head = NULL;
     }
