@@ -508,6 +508,120 @@ void removingDuplicateNode(struct node **ptr)
     }
 }
 
+
+void reversingByElements(struct node **ptr)
+{
+    struct node *current = NULL;
+    int index            = 0;
+    int *a               = NULL;
+    int size             = 0;
+    
+    size = NodeCount(*ptr);
+    a = (int *)malloc(size);
+
+    if (NULL == a)
+    {
+        printf("Memory Allocation failed ");
+        exit(1);
+    }
+
+    if (NULL != *ptr)
+    {
+        index   = size-1; 
+        current = *ptr;
+        while((NULL != current) && (0 <= index))
+        {
+            a[index] = current->data;
+            current  = current->next;
+            index--;
+        }
+        current = *ptr;
+        index   = 0; 
+        while((NULL != current)&& (index < size))
+        {
+            current->data = a[index];
+            current = current->next;
+            index++;
+        }
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+
+    if (NULL != a)
+    {
+        free(a);
+        a = NULL;
+    }
+
+}
+
+void reversingByLinks(struct node **ptr)
+{
+    struct node *current = NULL;
+    struct node *prev    = NULL;
+    struct node *ahead   = NULL;
+
+    ahead = *ptr;
+    if (NULL != *ptr)
+    {
+        while(NULL != ahead)
+        {
+            prev    = current;
+            current = ahead;
+            ahead   = ahead->next;
+            current->next = prev;
+        }
+        *ptr = current;
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+}
+
+/*tortoise hare algorethm (Floyd's Algo)*/
+int checkLoop(struct node **ptr)
+{
+    struct node *hare     = NULL;
+    struct node *tortoise = NULL;
+    MyBool isloopFound    = False;
+
+    tortoise = *ptr;
+    hare     = *ptr;
+    
+    if (NULL != *ptr)
+    {
+        while(NULL != hare)
+        {
+            tortoise = tortoise->next;
+            if (hare == tortoise)
+            {
+                isloopFound = True;
+                tortoise = *ptr;
+            }
+            hare = hare->next;
+        }
+    
+    }
+    else
+    {
+        printf("EMPTY LINK LIST\n");
+        exit(1);
+    }
+    if (True == isloopFound)
+    {
+        return  0;
+    }
+    else 
+    {
+        return  1;
+    }
+}
+
 int main()
 {
     struct node *head = NULL;
@@ -523,7 +637,8 @@ int main()
         printf("4.No. of nodes\n5.Searching\n6.Sum of LL\n7.Max and Min\n");
         printf("8.Insert at beg\n9.Insert at pos\n10.Delete at pos\n11.Delete at beg\n");
         printf("12.Delete at end\n13.Insert in sorted list\n14.check if link list is sorted\n");
-        printf("15.Delete by data\n16.Sort Link List\n17.Removing Duplicate node\n");
+        printf("15.Delete by data\n16.Sort Link List\n17.Removing Duplicate node\n18.Reversing LinkList by elements\n");
+        printf("19.Reversing Link List by links\n20.Checking for loop\n");
         printf("Enter choice:");
         scanf("%d",&choice);
         switch(choice)
@@ -658,6 +773,37 @@ int main()
                 DisplayLinkList(head);
                 break;
             }
+            case 18:
+            {
+                printf("Link List Before Reversing\n");
+                DisplayLinkList(head);
+                reversingByElements(&head);
+                printf("Link List after Reversing\n");
+                DisplayLinkList(head);
+                break;
+            }
+            case 19:
+            {
+                printf("Link List Before Reversing \n");
+                DisplayLinkList(head);
+                reversingByLinks(&head);
+                printf("Link List after Reversing\n");
+                DisplayLinkList(head);
+                break;
+            }
+            case 20:
+            {
+                if (0 == checkLoop(&head))
+                {
+                    printf("Link list have loops \n");
+                }
+                else
+                {
+                    printf("No loops found \n");
+                }
+                break;
+            } 
+
             default:
                 printf("Wrong Choice : \n");
         
