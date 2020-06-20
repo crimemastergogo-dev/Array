@@ -36,15 +36,12 @@ void InsertCircularDoubllyLinkList(struct node **ptr,int value)
     }
     else
     {
-        while (*ptr != p->next)
-        {
-            p = p->next;
-        }
-        temp->prev = p;
-        p->next    = temp;
+        struct node *last = p->prev;
         temp->next = *ptr;
+        p->prev    = temp;
+        temp->prev = last;
+        last->next = temp;
     }
-
 }
 
 void DisplayCircularDoubllyLinkList(struct node *ptr)
@@ -70,20 +67,22 @@ void DisplayCircularDoubllyLinkList(struct node *ptr)
 
 void DeleteCircularDoubllyLinkList(struct node **ptr)
 {
-    struct node *temp    = NULL;
-    struct node *current = NULL;
+    struct node *first = *ptr;
+    struct node *last  = NULL;
+    struct node *temp  = NULL;
     
-    current = *ptr;
     if(NULL!= *ptr)
     {
-        while(current->next != *ptr)
+        last = first->prev; 
+        temp = last->prev;
+        temp->next  = first;
+        first->prev = temp;
+        
+        if (NULL != last)
         {
-            temp       = current;
-            current    = current->next;
+            free(last);
+            last = NULL;
         }
-        temp->next = *ptr;
-        free(current);
-        current = NULL;
     }
     else
     {
