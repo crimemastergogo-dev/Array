@@ -103,7 +103,6 @@ int StackTop(Stack *ptr)
     }
 
     return ret_val;
-
 }
 
 void DisplayStack(Stack *ptr)
