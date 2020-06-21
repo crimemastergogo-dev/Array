@@ -82,7 +82,7 @@ int peek(Stack *ptr,int index)
         }
         else
         {
-            return ptr->A[index];
+            return ptr->A[ptr->top-index+1];
         }
     }
 
@@ -91,7 +91,19 @@ int peek(Stack *ptr,int index)
 
 int StackTop(Stack *ptr)
 {
-    return ptr->top;
+    int ret_val = 0;
+
+    if (0 == isEmpty(ptr))
+    {
+        printf("Stack is Empty\n");
+    }
+    else
+    {
+            return ptr->A[ptr->top];
+    }
+
+    return ret_val;
+
 }
 
 void DisplayStack(Stack *ptr)
@@ -109,8 +121,6 @@ void DisplayStack(Stack *ptr)
             printf("|____|\n");
         }
     }
-
-
 }
 
 int main()
@@ -146,16 +156,22 @@ int main()
             }
             case 3:
             {
-                break;
-            }
-            case 4:
-            {
                 printf("Enter Index to Peek:");
                 scanf("%d",&value);
                 if (peek(stack,value))
                 {
-                    printf("Value at index %d = %d",value,peek(stack,value));
+                    printf("Value at index %d = %d\n",value,peek(stack,value));
                 }
+
+                break;
+            }
+            case 4:
+            {
+                if (StackTop(stack))
+                {
+                    printf("Stack Top = %d",StackTop(stack));
+                }
+
                 break;
             }
             case 5:
