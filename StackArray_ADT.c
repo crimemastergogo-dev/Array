@@ -11,7 +11,7 @@ typedef struct
 /*Initializing Stack*/
 void StackInit(Stack *ptr)
 {
-    printf("Enter max size of Array:");
+    printf("Enter max size of Stack:");
     scanf("%d",&ptr->size);
     ptr->top = -1;
     if(ptr->top < ptr->size && ptr->size > 0)
@@ -203,10 +203,12 @@ int main()
         scanf("%d",&cont);
     }while(1 == cont);
    
-    if(NULL != stack->A)
+    if((NULL != stack->A)&&(NULL != stack))
     {
         free(stack->A);
         stack->A = NULL;
+        free(stack);
+        stack = NULL;
     }
 
     return 0;

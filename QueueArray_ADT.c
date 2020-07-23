@@ -21,8 +21,11 @@ void QueueInit(Queue *ptr)
         ptr->A = (int *)malloc(ptr->size*sizeof(int));
     else
     {
-        printf("ERROR:Memory Allocation Failed\n");
-        exit (1);
+        if (NULL == ptr->A)
+        {
+            printf("ERROR:Memory Allocation Failed\n");
+            exit (1);
+        }
     }
 }
 
@@ -32,6 +35,8 @@ int isEmpty(Queue *ptr)
     if (ptr->front == ptr->rear)
         ret_val = 0;
 
+    ptr->front = -1;
+    ptr->rear  = -1;
     return ret_val;
 }
 
@@ -41,6 +46,8 @@ int isFull(Queue *ptr)
     if (ptr->front > ptr->size)
         ret_val = 0;
 
+    ptr->front = -1;
+    ptr->rear  = -1;
     return ret_val;
 }
 

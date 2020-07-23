@@ -16,14 +16,8 @@ typedef struct
     int length;
 }String;
 
-void getString(String *ptr)
+void mallocString(String *ptr,int len)
 {
-    char temp[MAX_STRING_LIMIT];
-    int index =0;
-
-    fgets(temp,MAX_STRING_LIMIT,stdin);
-    int len = strlen(temp);
-
     if (0 < len )
     {
         ptr->chr = (char *)malloc(len);
@@ -33,6 +27,17 @@ void getString(String *ptr)
         fprintf(stderr,"ERROR:Memory Allocation Failed\n");
         exit (1);
     }
+
+}
+void getString(String *ptr)
+{
+    char temp[MAX_STRING_LIMIT];
+    int index =0;
+
+    fgets(temp,MAX_STRING_LIMIT,stdin);
+    int len = strlen(temp);
+
+    mallocString(ptr,len);
 
     for (index =0;index<len;index++)
     {
@@ -389,10 +394,31 @@ int  AnagramString(String *ptr,String *ptr1)
     return 1;
 }
 
-void PermutationString(String *ptr,int strlen)
+void PermutationString(String *ptr,int index)
 {
-    static int []
-
+    static int aux[MAX_STRING_LIMIT] = {0};
+    static char result[MAX_STRING_LIMIT];
+    int i= 0;
+    memset(result,0,sizeof(result));
+    if ('\0' == ptr->chr[index])
+    {
+        result[index] = '\0';
+        printf("%d.%s\n",index,result);
+    
+    }
+    else
+    {
+        for (i = 0;ptr->chr[i] != '\0';i++)
+        {
+            if(0 == aux[i])
+            {
+                result[index] = ptr->chr[i];
+                aux[i] = 1;
+                PermutationString(ptr,index+1);
+                aux[i] = 0;
+            }
+        }
+    }
 }
 
 int main()
@@ -422,7 +448,7 @@ int main()
         fprintf(stdout,"5.Toggle case\n6.No. of words,sentence,paragraph\n");
         fprintf(stdout,"7.Is alpha numeric\n8.Vowel and Vowel count\n9.Consonent and consonent count\n");
         fprintf(stdout,"10.String Reverse\n11.Comparing to string\n12.Palindrome String\n");
-        fprintf(stdout,"13.Duplicate in a String\n14.Anagram\n");
+        fprintf(stdout,"13.Duplicate in a String\n14.Anagram\n15.Permutation\n");
         fprintf(stdout,"Enter choice:");
         scanf("%d",&choice);
         getchar();
@@ -678,6 +704,13 @@ int main()
                     free(string4);
                     string4 = NULL;
                 }
+                break;
+            }
+            case 15:
+            {
+                fprintf(stdout,"Permutaion of the string %s are :\n",
+                        DisplayString(string));
+                PermutationString(string,0);//0 = starting index
                 break;
             }
             default: printf("Wrong Choice\n");

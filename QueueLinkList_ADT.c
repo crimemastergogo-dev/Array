@@ -56,7 +56,7 @@ void EnqueueLL(struct QueueLinkList  **ptr,int value)
         }
         temp->data = value;
         temp->next = NULL;
-        if(NULL == *ptr)
+        if(NULL == rear)
         {
             *ptr  = temp;
             front = temp;
@@ -120,6 +120,10 @@ int DequeueLL()
         temp    = front;
         ret_val = front->data; 
         front   = front->next;
+        if (NULL == front)
+        {
+            rear = NULL;
+        }
         if (NULL != temp)
         {
             free(temp);

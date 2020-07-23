@@ -261,6 +261,7 @@ void In_orederTraversal(struct BinaryTree *ptr)
 
 void Post_orederTraversal(struct BinaryTree *ptr)
 {
+#if 0
     struct StackLinkList  *stack  = NULL;
     struct StackLinkList  *top    = NULL;
     long int temp                 = 0;
@@ -299,6 +300,7 @@ void Post_orederTraversal(struct BinaryTree *ptr)
         free(top);
         top = NULL;
     }
+#endif
 }
 
 void pre_orderDisplay(struct BinaryTree *ptr)
@@ -327,6 +329,111 @@ void In_orderDisplay(struct BinaryTree *ptr)
         printf("%d ",ptr->data);
         In_orderDisplay(ptr->Right_child);
     }
+}
+
+void Level_orderTraversal(struct BinaryTree *ptr)
+{
+    struct QueueLinkList *queue = NULL;
+
+    printf("%d ",ptr->data);
+    EnqueueLL(&queue,ptr);
+
+    while(isEmpty())
+    {
+        ptr = (struct BinaryTree *)DequeueLL();
+        if (ptr->Left_child)
+        {
+            printf("%d ",ptr->Left_child->data);
+            EnqueueLL(&queue,ptr->Left_child);
+        }
+        if (ptr->Right_child)
+        {
+            printf("%d ",ptr->Right_child->data);
+            EnqueueLL(&queue,ptr->Right_child);
+        }
+    }
+
+    if(NULL != queue)
+    {
+        free(queue);
+        queue = NULL;
+    }
+}
+
+int Node_Count_Binary_Tree(struct BinaryTree *ptr)
+{
+    int left  = 0;
+    int right = 0;
+    if (NULL != ptr)
+    {
+        left  = Node_Count_Binary_Tree(ptr->Left_child);
+        right = Node_Count_Binary_Tree(ptr->Right_child);
+        return right + left +1;
+    }
+    return 0;
+}
+
+int Leaf_Node_Count_Binary_Tree(struct BinaryTree *ptr)
+{
+    int left  = 0;
+    int right = 0;
+    if (NULL != ptr)
+    {
+        left  = Leaf_Node_Count_Binary_Tree(ptr->Left_child);
+        right = Leaf_Node_Count_Binary_Tree(ptr->Right_child);
+        if ((NULL == ptr->Left_child) && (NULL == ptr->Right_child))
+            return right + left +1;
+        else
+            return right + left;
+    }
+    return 0;
+}
+
+int Degree_2_Node_Count_Binary_Tree(struct BinaryTree *ptr)
+{
+    int left  = 0;
+    int right = 0;
+    if (NULL != ptr)
+    {
+        left  = Degree_2_Node_Count_Binary_Tree(ptr->Left_child);
+        right = Degree_2_Node_Count_Binary_Tree(ptr->Right_child);
+        if ((NULL != ptr->Left_child) && (NULL != ptr->Right_child))
+            return right + left +1;
+        else
+            return right + left;
+    }
+    return 0;
+}
+
+int Degree_1_and_2_Node_Count_Binary_Tree(struct BinaryTree *ptr)
+{
+    int left  = 0;
+    int right = 0;
+    if (NULL != ptr)
+    {
+        left  = Degree_1_and_2_Node_Count_Binary_Tree(ptr->Left_child);
+        right = Degree_1_and_2_Node_Count_Binary_Tree(ptr->Right_child);
+        if ((NULL != ptr->Left_child) || (NULL != ptr->Right_child))
+            return right + left +1;
+        else
+            return right + left;
+    }
+    return 0;
+}
+int Degree_1_Node_Count_Binary_Tree(struct BinaryTree *ptr)
+{
+    int left  = 0;
+    int right = 0;
+    if (NULL != ptr)
+    {
+        left  = Degree_1_Node_Count_Binary_Tree(ptr->Left_child);
+        right = Degree_1_Node_Count_Binary_Tree(ptr->Right_child);
+        if ((NULL != ptr->Left_child) ^ (NULL != ptr->Right_child))
+            return right + left +1;
+        else
+            return right + left;
+    }
+    return 0;
 }
 
 void CreateBinaryTree(struct BinaryTree **Node)
@@ -399,8 +506,6 @@ void CreateBinaryTree(struct BinaryTree **Node)
         free(queue);
         queue = NULL;
     }
-
-
 }
 
 int main()
@@ -427,6 +532,16 @@ int main()
 
     printf("\nPost Order Traversal using Loop \n");
     Post_orederTraversal(root);
+
+    printf("\nLevel Order Traversal using Loop \n");
+    Level_orderTraversal(root);
+
+    printf("\nNode Count of Tree : %d\n",Node_Count_Binary_Tree(root));
+    printf("\nLeaf Node Count of Tree : %d\n",Leaf_Node_Count_Binary_Tree(root));
+    printf("\nNode with degree 2 Count of Tree : %d\n",Degree_2_Node_Count_Binary_Tree(root));
+    printf("\nNode with degree 1 & 2 Count of Tree : %d\n",Degree_1_and_2_Node_Count_Binary_Tree(root));
+    printf("\nNode with degree 1 Count of Tree : %d\n",Degree_1_Node_Count_Binary_Tree(root));
+
     if (NULL != root)
     {
         free(root);
