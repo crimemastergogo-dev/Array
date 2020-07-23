@@ -15,8 +15,97 @@ struct  QueueLinkList
     struct QueueLinkList *next;
 };
 
+struct  StackLinkList
+{
+    void* data;
+    struct StackLinkList *next;
+};
+
 struct QueueLinkList  *front  = NULL;
 struct QueueLinkList  *rear   = NULL;
+
+int isEmptyStack(struct StackLinkList *top)
+{
+    if (NULL == top)
+        return 0;
+    else
+        return 1;
+}
+
+int isFullStack()
+{
+    int ret_val = 1;
+    struct StackLinkList *ptr = NULL;
+    ptr = (struct StackLinkList *)malloc(sizeof(struct StackLinkList));
+    if (NULL == ptr )
+    {
+        ret_val = 0;
+    }
+    if (NULL != ptr)
+    {
+        free(ptr);
+        ptr = NULL;
+    }
+    return ret_val;
+}
+
+void push(struct StackLinkList **ptr,struct StackLinkList **top,void *data)
+{
+    if (0 == isFullStack())
+    {
+        printf("Stack is Full\nNo Element can be push further\n");
+    }
+    else
+    {
+        struct StackLinkList *temp    = NULL;
+        temp = (struct StackLinkList *)malloc(sizeof(struct StackLinkList));
+        memset(temp,0,sizeof(struct StackLinkList));
+        temp->data = data;
+        temp->next = NULL;
+        if (NULL == *ptr)
+        {
+            *ptr = temp;
+            *top = temp;
+        }
+        else
+        {
+            temp->next = *ptr;
+            *ptr = temp;
+            *top = temp;
+        }
+    }
+}
+
+void *pop(struct StackLinkList **ptr,struct StackLinkList **top)
+{
+    void *ret_val = NULL;
+    if (0 == isEmptyStack(*top))
+    {
+        printf("Stack is Empty\nNo Element can be poped further\n");
+    }
+    else
+    {
+        struct StackLinkList *temp = NULL;
+        if (NULL != *ptr)
+        {
+            temp = *ptr;
+            ret_val = temp->data; 
+            *ptr = temp->next;
+            *top = temp->next;
+            if (NULL != temp)
+            {
+                free(temp);
+                temp = NULL;
+            }
+        }
+        else
+        {
+            printf("Stack is Empty\n");
+        }
+    }
+
+    return ret_val;
+}
 
 int isEmpty(void)
 {
@@ -102,6 +191,114 @@ void *DequeueLL()
         }
     }
     return ret_val;
+}
+
+void Pre_orederTraversal(struct BinaryTree *ptr)
+{
+    struct StackLinkList  *stack  = NULL;
+    struct StackLinkList  *top    = NULL;
+
+    push(&stack,&top,ptr);
+    while(isEmptyStack(top))
+    {
+        if (NULL != ptr)
+        {
+            printf("%d ",ptr->data);
+            push(&stack,&top,ptr);
+            ptr = ptr->Left_child;
+        }
+        else
+        {
+            ptr = pop(&stack,&top);
+            ptr = ptr->Right_child;
+        }
+    }
+
+    if(NULL != stack)
+    {
+        free(stack);
+        stack = NULL;
+    }
+    if(NULL != top)
+    {
+        free(top);
+        top = NULL;
+    }
+}
+
+void In_orederTraversal(struct BinaryTree *ptr)
+{
+    struct StackLinkList  *stack  = NULL;
+    struct StackLinkList  *top    = NULL;
+
+    while((NULL != ptr)||
+            (isEmptyStack(top)))
+    {
+        if (NULL != ptr)
+        {
+            push(&stack,&top,ptr);
+            ptr = ptr->Left_child;
+        }
+        else
+        {
+            ptr = pop(&stack,&top);
+            printf("%d ",ptr->data);
+            ptr = ptr->Right_child;
+        }
+    }
+
+    if(NULL != stack)
+    {
+        free(stack);
+        stack = NULL;
+    }
+    if(NULL != top)
+    {
+        free(top);
+        top = NULL;
+    }
+}
+
+void Post_orederTraversal(struct BinaryTree *ptr)
+{
+    struct StackLinkList  *stack  = NULL;
+    struct StackLinkList  *top    = NULL;
+    long int temp                 = 0;
+
+    while((NULL != ptr)||
+            (isEmptyStack(top)))
+    {
+        if (NULL != ptr)
+        {
+            push(&stack,&top,ptr);
+            ptr = ptr->Left_child;
+        }
+        else
+        {
+            temp = pop(&stack,&top);
+            if (0 < temp)
+            {
+                push(&stack,&top,-temp);
+                ptr = ((struct BinaryTree *)temp)->Right_child;
+            }
+            else
+            {
+                printf("%d ",((struct BinaryTree *)temp)->data);
+                ptr = NULL;
+            }
+        }
+    }
+
+    if(NULL != stack)
+    {
+        free(stack);
+        stack = NULL;
+    }
+    if(NULL != top)
+    {
+        free(top);
+        top = NULL;
+    }
 }
 
 void pre_orderDisplay(struct BinaryTree *ptr)
@@ -222,6 +419,14 @@ int main()
     printf("\nIn Order Traversal using Recursion \n");
     In_orderDisplay(root);
 
+    printf("\nPre Order Traversal using Loop \n");
+    Pre_orederTraversal(root);
+
+    printf("\nIn Order Traversal using Loop \n");
+    In_orederTraversal(root);
+
+    printf("\nPost Order Traversal using Loop \n");
+    Post_orederTraversal(root);
     if (NULL != root)
     {
         free(root);
