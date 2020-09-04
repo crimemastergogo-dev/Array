@@ -99,6 +99,27 @@ void InsertionSort(ARRAY *p_array)
 /* Selection Sort */
 void SelectionSort(ARRAY *p_array)
 {
+    int index1 = 0;
+    int index2 = 0;
+    int index3 = 0;
+    int temp   = 0;
+
+    for (index1 = 0 ; index1 < p_array->length-1 ; index1++)
+    {
+        for (index2 = index3 = index1 ; index2 < p_array->length ; index2++)
+        {
+            if (p_array->A[index2] < p_array->A[index3])
+                index3 = index2;
+        }
+        temp               = p_array->A[index1];
+        p_array->A[index1] = p_array->A[index3];
+        p_array->A[index3] = temp;
+    }
+
+}
+
+void QuickSort(ARRAY *p_array)
+{
 
 }
 
@@ -123,8 +144,10 @@ int main()
     //BubbleSort(p_array);
     //printf("Array After Insertion Sort:");
     //InsertionSort(p_array);
-    printf("Array After Selection Sort:");
-    SelectionSort(p_array);
+    //printf("Array After Selection Sort:");
+    //SelectionSort(p_array);
+    printf("Array After Quick Sort:");
+    QuickSort(p_array);
     Display(p_array);
     if (NULL != p_array)
     {
