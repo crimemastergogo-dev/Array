@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<limits.h>
 
 typedef struct
 {
@@ -118,8 +119,102 @@ void SelectionSort(ARRAY *p_array)
 
 }
 
+int partition(int A[],int low,int high)
+{
+    int index1 = 0;
+    int index2 = 0;
+    int pivot  = 0;
+    int temp   = 0;
+
+    index1 = low;
+    index2 = high;
+    pivot  = A[0];
+    
+    do 
+    {
+        do
+        {
+            index1++;
+        }while(A[index1] <= pivot);
+        do
+        {
+            index2++;
+        }while(A[index2] > pivot);
+
+        if (index1 < index2)
+        {
+            temp      = A[index1];
+            A[index1] = A[index2];
+            A[index2] = temp;
+        }
+
+    }while(index1 < index2);
+    temp      = A[low];
+    A[low]    = A[index2]; 
+    A[index2] = temp; 
+
+    return index2;
+}
+
+void RQuickSort(int A[],int low,int high)
+{
+    int index = 0;
+    if (low < high)
+    {
+        index = partition(A,low,high);
+        RQuickSort(A,low,index);
+        RQuickSort(A,index+1,high);
+    }
+}
+
 void QuickSort(ARRAY *p_array)
 {
+    p_array->A[++p_array->length] = INT_MAX;
+
+    RQuickSort(p_array->A,0,p_array->length);
+}
+
+int Max(ARRAY *ptr)
+{
+    int max = *ptr->A;
+    int i   = 0;
+
+    for (i = 0;i<ptr->length;i++)
+        if(*(ptr->A+i)>max)
+            max = *(ptr->A+i);
+
+    return max;
+}
+
+void CountSort(ARRAY *p_array)
+{
+    int max_ele = 0;
+    int index1  = 0;
+    int index2  = 0;
+
+    max_ele = Max(p_array) + 1;
+
+    int Array[max_ele] ;
+    memset(Array,0,max_ele * sizeof(int));
+
+    for (index1 = 0 ; index1 < p_array->length ; index1++)
+    {
+        Array[p_array->A[index1]]++;
+    }
+
+    index1  = 0;
+    while((index1 < max_ele) &&
+            (index2 < p_array->length))
+    {
+        if (0 != Array[index1])
+        {
+            p_array->A[index2] = index1;
+            Array[index1]--;
+            index2++;
+        }
+        else
+            index1++;
+    }
 
 }
 
@@ -146,8 +241,12 @@ int main()
     //InsertionSort(p_array);
     //printf("Array After Selection Sort:");
     //SelectionSort(p_array);
-    printf("Array After Quick Sort:");
-    QuickSort(p_array);
+    //printf("Array After Quick Sort:");
+    //QuickSort(p_array);
+    //printf("Array After Quick Sort:");
+    //QuickSort(p_array);
+    printf("Array After Count Sort:");
+    CountSort(p_array);
     Display(p_array);
     if (NULL != p_array)
     {
